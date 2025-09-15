@@ -25,4 +25,4 @@ async def get_message():
 # 5. Add a main block to run the app with uvicorn
 #    This allows you to run the script directly with `python main.py`
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
