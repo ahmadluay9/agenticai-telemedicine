@@ -1,0 +1,73 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Frontend</title>
+    <!-- Use Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Widget JavaScript bundle -->
+    <script src="https://cloud.google.com/ai/gen-app-builder/client?hl=en_US"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">FastAPI + HTML</h1>
+        <p class="text-gray-600 mb-6">This page fetches data from a Python backend.</p>
+
+        <!-- Element that opens the widget on click. It does not have to be an input -->
+        <div class="mb-6">
+            <input placeholder="Search here" id="searchWidgetTrigger" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Container where the message from the backend will be displayed -->
+        <div id="message-container" class="bg-gray-200 p-4 rounded-md text-lg text-gray-700 font-mono min-h-[50px] flex items-center justify-center">
+            <!-- Loading message -->
+            <p>Loading message from backend...</p>
+        </div>
+    </div>
+
+    <!-- Search widget element is not visible by default -->
+    <gen-search-widget
+      configId="187cfe68-e72d-4423-b25a-eabf6c943050"
+      triggerId="searchWidgetTrigger">
+    </gen-search-widget>
+
+    <script>
+        // JavaScript to fetch data from the backend API
+        window.onload = function() {
+            // Find the container element
+            const messageContainer = document.getElementById('message-container');
+
+            // Use the fetch API to make a request to our backend endpoint
+            fetch('/api/message')
+                .then(response => {
+                    // Check if the request was successful
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Parse the JSON response
+                    return response.json();
+                })
+                .then(data => {
+                    // Update the content of the container with the message from the backend
+                    messageContainer.textContent = data.message;
+                })
+                .catch(error => {
+                    // If there's an error, display an error message
+                    console.error('There has been a problem with your fetch operation:', error);
+                    messageContainer.textContent = 'Error: Could not fetch data from the backend.';
+                    messageContainer.classList.add('text-red-500');
+                });
+        };
+    </script>
+
+</body>
+</html>
