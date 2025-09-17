@@ -4,6 +4,10 @@ FROM python:3.13-slim
 # Set the working directory in the container
 WORKDIR /app
 
+# Set environment variables
+ENV PYTHONUNBUFFERED 1
+ENV PORT 8080
+
 # Copy the dependencies file to the working directory
 COPY requirements.txt .
 

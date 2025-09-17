@@ -17,5 +17,5 @@ telemedicine_agent/
 │   ├── agent.py
 │   ├── prompts.py
 │   └── tools.py 
-├── requirements.txt
+└──requirements.txt
 ```
