@@ -113,15 +113,21 @@ async def dapatkan_respons_agen_async(prompt: str, user_id: str):
 async def whatsapp_reply(request: Request, x_twilio_signature: str = Header(None)):
     """Merespons pesan WhatsApp yang masuk SETELAH memvalidasi request."""
     
+    # Rekonstruksi URL publik untuk validasi di lingkungan proxy seperti Cloud Run
+    protocol = request.headers.get("x-forwarded-proto", "https")
+    host = request.headers.get("host")
+    url = f"{protocol}://{host}{request.url.path}"
+
     # Validasi permintaan dari Twilio
     form_params = await request.form()
     is_valid_request = validator.validate(
-        str(request.url),
+        url,
         form_params,
         x_twilio_signature or ''
     )
     
     if not is_valid_request:
+        print(f"Validation failed. URL used: {url}")
         raise HTTPException(status_code=403, detail="Request not from Twilio")
 
     incoming_msg = form_params.get('Body')
